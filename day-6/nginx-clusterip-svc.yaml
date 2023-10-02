@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  selector:  # Seleciona os Pods que serão expostos pelo Service
+    app: nginx  # Nesse caso, os Pods com o label app=nginx
+  ports:
+  - port: 80  # porta do Service
+    targetPort: 8080  # porta dos Pods
+  type: ClusterIP

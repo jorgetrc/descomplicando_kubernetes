@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  type: NodePort  # Tipo do Service
+  selector:  # Seleciona os Pods que serão expostos pelo Service
+    app: nginx  # Nesse caso, os Pods com o label app=nginx
+  ports:
+  - port: 80  # Porta do Service, que será mapeada para a porta 8080 do Pod
+    targetPort: 8080  # porta dos Pods
+    nodePort: 30080  # Porta do Node, que será mapeada para a porta 80 do Service
