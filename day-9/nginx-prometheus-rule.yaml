@@ -1,0 +1,29 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: nginx-prometheus-rule
+  namespace: monitoring
+  labels:
+    prometheus: k8s
+    app.kubernetes.io/name: kube-prometheus
+    app.kubernetes.io/part-of: kube-prometheus
+spec:
+  groups:
+    - name: nginx-prometheus-rule
+      rules:
+      - alert: NginxDown  # Nome do alerta
+        expr: up{job="nginx"} == 0  # Expressão que será utilizada para disparar o alerta.
+        for: 1m  # Tempo que a expressão deve ser verdadeira para que o alerta seja disparado.
+        labels:
+          severity: critical  # Label que indica a severidade do alerta
+        annotations:
+          summary: "Nginx is down"  # Titulo do alerta
+          description: "Nginx is down for more than 1 minute. Pode name: {{ $labels.pod }}"  # Descrição do alerta
+      - alert: NginxHighRequestRate
+        expr: rate(nginx_http_requests_total{job="nginx"}[5m]) > 10 
+        for: 1m
+        labels:
+            severity: warning
+        annotations:
+          summary: "Nginx is receivind high request rate"
+          description: "Nginx is receiving high request rate for more than 1 minute. Pod name: {{ $labels.pod }}"
