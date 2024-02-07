@@ -8,5 +8,4 @@ spec:
   containers:
   - image: nginx
     name: nginx
-    resources: {}
   restartPolicy: Always
